@@ -1,0 +1,10 @@
+{
+	"name": "TRACE",
+	"nodes": [{
+      "data": { "id": "a", "acc_evt": ["a","b","c"], "ref_evt":["g","h","i"]}, "classes": "root_spec"
+    }
+	],
+    "edges": [{ 
+      "data": { "id": "ab", "source": "a", "target": "b"}
+    }]
+}
