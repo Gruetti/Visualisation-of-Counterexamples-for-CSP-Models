@@ -61,5 +61,12 @@ var common_stylesheet = [
       'background-color': '#fe8e41',
       'line-color': '#fe8e41' 
     }
+  },
+  {
+    selector: 'node.dummy',
+    style: {
+      'width': 0.1,
+      'background-opacity': 0
+    }
   }
   ];

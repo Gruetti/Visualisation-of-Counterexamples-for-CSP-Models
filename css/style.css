@@ -30,6 +30,9 @@
 #reset_button:hover {
     background-color: #fe8e41;
 }
+.info_button {
+	width: 120px;
+}
 
 #info_window {
 	padding: 15px;

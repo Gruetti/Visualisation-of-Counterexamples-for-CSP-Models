@@ -64,10 +64,13 @@ function hideInfo() {
 function showInfo(node) {
   var infoTemplate=[];
   infoTemplate = $('#info_template').html();
-  var infoTemplate_comp = Handlebars.compile('<p>Accepted: {{acc_evt}}</p><p>Refused: {{ref_evt}}');
+  var infoTemplate_comp = Handlebars.compile([
+    '<p>Accepted: {{acc_evt}}</p>',
+    '<p>Refused: {{ref_evt}}</p>',
+    '<button id="info_collapse_button" type="button" class="info_button">Collapse view</button>',
+    '<button id="info_expand_button" type="button" class="info_button">Expand view</button>'].join(""));
   var acc_evt = node.data('acc_evt');
   var ref_evt = node.data('ref_evt');
-
   if (acc_evt==undefined) {
     acc_evt= ['{}'];
   }
@@ -77,14 +80,50 @@ function showInfo(node) {
   $('#info_window').html(infoTemplate_comp({acc_evt:acc_evt, ref_evt:ref_evt})).show();
 }
 
-function resetView(cy) {
-  cy.reset();
+function expandNodes(onlyActive=false) {
+    
+    if (onlyActive) {
+      var activeNode = cy.nodes(':selected');
+      addExpandedNodes(activeNode);
+   } else {
+      cy.nodes().each(function (index, node) {addExpandedNodes(node);});
+    }
 }
 
-function getGraph() {
-  return cy;
-}
+function addExpandedNodes(node) {
 
+  cy.batch(function(){
+
+    if (node.data('acc_evt')!=undefined){
+      for (var i=0; i < node.data('acc_evt').length; i++) {
+
+        cy.add({"data":{"id":node.id()+"dummy"+i}, "classes":"dummy"+node.id()+" "+"dummy"});
+        cy.add({"data":{"id":node.id()+"edgeDummy"+i, "source":node.id(), "target": node.id()+"dummy"+i, "label":node.data('acc_evt')[i]}, "classes": "dummy"});
+
+      }
+      cy.elements('.dummy'+node.id()).layout({name: 'circle', boundingBox: {
+        x1: node.position('x'),
+        x2: node.position('x'),
+        y1: node.position('y'),
+        y2: node.position('y')
+      },
+      concentric: function( n ){
+        if( node.id() === n.id() ){
+          return 2;
+        } else {
+          return 1;
+        }
+      },
+      minNodeSpacing:1,
+      levelWidth: function(){
+        return 1;
+      },
+      fit:false, 
+      radius:100
+      });
+    }
+  });
+}
 
 
 
