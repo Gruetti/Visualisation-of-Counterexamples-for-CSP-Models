@@ -1,7 +1,15 @@
+/**
+* @author Nils Grüttner
+*
+* This module can create random nodes and edges. Also stores information for a default graph
+* ONLY FOR TESTING PURPOSES. WILL NOT BE RELEASED
+*/
+
 function graphGenerator(n=10,e=20,isDefault=true) {
 	
 	var nodes=[];
 	var graph=[];
+  //this is the default graph
 	var json = {
   "name": "TRACE",
   "nodes": [{
