@@ -6,7 +6,7 @@
 
 'use strict';
 //wait until document is loaded. then initialise the graph
-document.addEventListener("DOMContentLoaded", cyInit());
+document.addEventListener("DOMContentLoaded", cyInit(getData(),getType()));
 
 $(document).on("click", ".button, #info_expand_button, #info_collapse_button", click_handler);
 
@@ -22,8 +22,8 @@ function click_handler(button) {
 
   //this button will load a new graph
 	case "load_button":
-		cyInit(graphGenerator(10,20,true));
-    break;
+		cyInit(getData(),getType());
+     break;
 	
   //this button will reset the view to default
 	case "reset_button":

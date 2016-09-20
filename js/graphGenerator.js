@@ -56,7 +56,7 @@ function graphGenerator(n=10,e=20,isDefault=true) {
     }]
 };
 var default_graph=json.nodes.concat(json.edges);
-
+console.log(json.name);
 	if (isDefault) {
 		return default_graph;
 	}

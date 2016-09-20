@@ -9,27 +9,65 @@
 'use strict';
 
 var cy = [];
-var default_graph = graphGenerator();
 
 /**
-* This function creates a graph object with cytoscape.js and binds it to a html container
+* This function creates a graph object with cytoscape.js and binds it to a html container. It also sets 
+* options for layout and style, according to counterexample type
 *
-* @param {object} data A object in JSON format, containing edges and nodes for the graph
+* @param {object} data An object in JSON format, containing edges and nodes for the graph
+* @param {string} type The counterexample type
 *
 */
-function cyInit(data=default_graph) {
+function cyInit(data,type) {
   hideInfo();
+  var layout_options = [];
+  //set layout, depending on counterexample type
+  switch(type) {
+
+    case "TRACE":
+    layout_options = {
+      name: 'grid',
+      position: function (node) {
+        if (node.hasClass('imp')) {
+       return {row:2,col:undefined};
+        } else {
+          return {row:1, col:undefined}
+        }
+      },
+      fit: true,
+      rows: 2
+    }
+    break;
+
+    case "FAILURE":
+    layout_options = {
+      name: 'grid',
+      position: function (node) {
+        if (node.hasClass('imp')) {
+       return {row:2,col:undefined};
+        } else {
+          return {row:1, col:undefined}
+        }
+      },
+      fit: true
+    }
+    break;
+
+    case "LOOP":
+    layout_options = {
+      name: 'grid',
+      fit: true,
+      rows: 1
+    }
+    break;
+  }
   
   // create a graph object and specify layout/style
 	cy = cytoscape({
 
 		container: document.getElementById('cy'), //container to render in
 		elements: data,
-    layout: {
-      name: 'grid',
-      fit: true,
-      rows: 2
-    },
+    layout: layout_options,
     style: common_stylesheet,
     selectionType: 'single',
     autoungrabify: true
@@ -78,8 +116,6 @@ function hideInfo() {
 */
 function showInfo(node) {
 
-  //choose the div where we render the info window
-  var infoTemplate = $('#info_template').html();
   //create the info window
   var infoTemplate_comp = Handlebars.compile([
     '<p>Accepted: {{acc_evt}}</p>',
@@ -97,7 +133,7 @@ function showInfo(node) {
   if (ref_evt==undefined) {
     ref_evt= ['{}'];
   }
-  //show the info window
+  //show the info window in the predefined info_window div
   $('#info_window').html(infoTemplate_comp({acc_evt:acc_evt, ref_evt:ref_evt})).show();
 }
 /**
@@ -129,12 +165,12 @@ function addExpandedNodes(node) {
   cy.batch(function(){
 
     //if current node does not accept anything, just do nothing
-    if ((node.data('acc_evt')!=undefined) && !node.hasClass('expanded')){
+    if ((node.data('acc_evt')!=undefined) && !node.hasClass('expanded') && !node.hasClass('spec_end') && !node.hasClass('imp_end')){
       //create a new node and an edge, leading from current node to new node
       for (var i=0; i < node.data('acc_evt').length; i++) {
 
         cy.add({"data":{"id":node.id()+"dummy"+i}, "classes":"dummy"+node.id()+" "+"dummy"});
-        cy.add({"data":{"id":node.id()+"edgeDummy"+i, "source":node.id(), "target": node.id()+"dummy"+i, "label":node.data('acc_evt')[i]}, "classes": "dummy"});
+        cy.add({"data":{"id":node.id()+"edgeDummy"+i, "source":node.id(), "target": node.id()+"dummy"+i, "label":node.data('acc_evt')[i]}, "classes": "dummy"+node.id()+" "+"dummy"});
         node.addClass('expanded');
 
       }

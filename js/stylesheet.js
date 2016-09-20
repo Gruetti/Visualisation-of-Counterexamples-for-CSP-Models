@@ -3,6 +3,7 @@ var common_stylesheet = [
     selector: 'node',
     	style: {
       'background-color': '#666',
+      'label': 'data(label)'
   }
   }, 
   { selector: 'node.root_spec',
@@ -42,14 +43,14 @@ var common_stylesheet = [
     }
   },
   {
-    selector: 'node.spec_end, edge.accepted',
+    selector: 'node.spec_end, edge.traceEdgeDummy',
     style: {
       'background-color': 'green',
       'line-color': 'green'
     }
   },
   {
-    selector: 'node.imp_end, edge.refused',
+    selector: 'node.imp_end, edge.imp_end, edge.failEdgeDummy',
     style: {
       'background-color': 'red',
       'line-color': 'red'
@@ -63,7 +64,7 @@ var common_stylesheet = [
     }
   },
   {
-    selector: 'node.dummy',
+    selector: 'node.dummy, node.failDummy, node.traceDummy',
     style: {
       'width': 0.1,
       'background-opacity': 0
