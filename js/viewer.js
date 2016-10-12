@@ -8,6 +8,7 @@
 
 'use strict';
 
+
 var cy = [];
 
 /**
@@ -35,7 +36,8 @@ function cyInit(data,type) {
         }
       },
       fit: true,
-      rows: 2
+      rows: 2,
+      condense: false
     }
     break;
 
@@ -49,7 +51,8 @@ function cyInit(data,type) {
           return {row:1, col:undefined}
         }
       },
-      fit: true
+      fit: true,
+      condense: false
     }
     break;
 
@@ -70,7 +73,7 @@ function cyInit(data,type) {
     layout: layout_options,
     style: common_stylesheet,
     selectionType: 'single',
-    autoungrabify: true
+    //autoungrabify: true
   });
   
   //Event handlers for nodes/edges
@@ -118,19 +121,20 @@ function showInfo(node) {
 
   //create the info window
   var infoTemplate_comp = Handlebars.compile([
-    '<p>Accepted: {{acc_evt}}</p>',
+    '<p>Available: {{acc_evt}}</p>',
     '<p>Refused: {{ref_evt}}</p>',
     '<button id="info_collapse_button" type="button" class="info_button">Collapse view</button>',
     '<button id="info_expand_button" type="button" class="info_button">Expand view</button>'].join(""));
-  //gathers information on accepted events, that are shown in the info window
-  var acc_evt = node.data('acc_evt');
+  //gathers information on available events, that are shown in the info window
+  var acc_evt = "{"+node.data('acc_evt')+"}";
   //gathers information on refused events, that are shown in the info window
-  var ref_evt = node.data('ref_evt');
+  var ref_evt = "{"+node.data('ref_evt')+"}";
   //if empty, show empty set
-  if (acc_evt==undefined) {
+  if (acc_evt.length==0) {
     acc_evt= ['{}'];
   }
-  if (ref_evt==undefined) {
+
+  if (ref_evt.length==0) {
     ref_evt= ['{}'];
   }
   //show the info window in the predefined info_window div
@@ -168,10 +172,11 @@ function addExpandedNodes(node) {
     if ((node.data('acc_evt')!=undefined) && !node.hasClass('expanded') && !node.hasClass('spec_end') && !node.hasClass('imp_end')){
       //create a new node and an edge, leading from current node to new node
       for (var i=0; i < node.data('acc_evt').length; i++) {
-
+        if (node.data('acc_evt')[i]!=node.outgoers('edge').data().label){
         cy.add({"data":{"id":node.id()+"dummy"+i}, "classes":"dummy"+node.id()+" "+"dummy"});
         cy.add({"data":{"id":node.id()+"edgeDummy"+i, "source":node.id(), "target": node.id()+"dummy"+i, "label":node.data('acc_evt')[i]}, "classes": "dummy"+node.id()+" "+"dummy"});
         node.addClass('expanded');
+      }
 
       }
       //for all newly created nodes, arrange them around their parent node in a circular shape

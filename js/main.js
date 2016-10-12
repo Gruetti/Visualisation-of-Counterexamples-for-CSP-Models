@@ -6,9 +6,25 @@
 
 'use strict';
 //wait until document is loaded. then initialise the graph
-document.addEventListener("DOMContentLoaded", cyInit(getData(),getType()));
+document.addEventListener("DOMContentLoaded", init());
+//Event listener for file input
+document.getElementById('json_file').addEventListener('change', handleFileSelect);
 
 $(document).on("click", ".button, #info_expand_button, #info_collapse_button", click_handler);
+
+function init() {
+
+  if (getData() != undefined) {
+    cyInit(getData(),getType());
+  }
+}
+
+function handleFileSelect(evt) {
+
+  var file = evt.target.files[0];
+  //parse file and initialize Cytoscape, when finished
+  parseFile(file, cyInit);
+}
 
 /**
 * Click handler for all buttons
@@ -22,12 +38,12 @@ function click_handler(button) {
 
   //this button will load a new graph
 	case "load_button":
-		cyInit(getData(),getType());
-     break;
+    document.getElementById('json_file').click();
+    break;
 	
   //this button will reset the view to default
 	case "reset_button":
-		cy.reset();
+		cy.center();
     break;
 
   //this button will collapse all nodes
@@ -46,7 +62,7 @@ function click_handler(button) {
     cy.elements(':selected').removeClass('expanded');
     break;
   
-  //this button will expand all nodes (showing the accepted events for this node) 
+  //this button will expand all nodes (showing the available events for this node) 
 	case "expand_button":
     expandNodes();
     break;

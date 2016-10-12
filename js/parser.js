@@ -6,51 +6,23 @@
 'use strict';
 
 var json = {
-  "name": "FAILURE",
-  "nodes": [{
-      "data": { "id": "1", "acc_evt": ["a","b"], "ref_evt":["d"]}, "classes": "root_spec spec"
-    },
-    {
-      "data": { "id": "2", "acc_evt": ["b"], "ref_evt":["g"]}, "classes": "spec"
-    },
-    {
-      "data": { "id": "3", "acc_evt": ["b","c"], "ref_evt":["h","i"]}, "classes": "spec"
-    },
-    {
-      "data": { "id": "4", "acc_evt": ["a"], "ref_evt":["g","f","d"]}, "classes": "spec_end spec"
-    },
-  {
-      "data": { "id": "1_", "acc_evt": ["a"], "ref_evt":["g","h","i"]}, "classes": "root_imp imp"
-    },
-    {
-      "data": { "id": "2_", "acc_evt": ["b"], "ref_evt":["g","h","i"]}, "classes": "imp"
-    },
-  {
-      "data": { "id": "3_", "acc_evt": ["c"], "ref_evt":["g","h","i"]}, "classes": "imp"
-    },
-    {
-      "data": { "id": "4_", "acc_evt": ["h"], "ref_evt":["g","h","i"]}, "classes": "imp_end imp"
-    }],
-    "edges": [{ 
-      "data": { "id": "a", "source": "1", "target": "2", "label": "a"}, "classes": "spec"
-    },
-  { 
-      "data": { "id": "b", "source": "2", "target": "3", "label": "b"}, "classes": "spec"
-    },
-    { 
-      "data": { "id": "c", "source": "3", "target": "4", "label": "c"}, "classes": "spec"
-    },
-  { 
-      "data": { "id": "a_", "source": "1_", "target": "2_", "label": "a"}, "classes": "imp"
-    },
-    { 
-      "data": { "id": "b_", "source": "2_", "target": "3_", "label": "b"}, "classes": "imp"
-    },
-  { 
-      "data": { "id": "c_", "source": "3_", "target": "4_", "label": "d"}, "classes": "imp"
-    }]
 };
 
+/**
+* This function creates a json object from a file object
+*
+* @param file A file object, containing a json
+* @param callback This function will be called, once the parsing is done
+*/
+function parseFile(file, callback) {
+
+	var reader = new FileReader();
+	reader.addEventListener("load", function () {
+		json=JSON.parse(reader.result);
+		callback(getData(),getType());
+	});
+	reader.readAsText(file);
+}
 
 /**
 * This function returns processed data to use in cytoscape
@@ -61,7 +33,7 @@ function getData() {
 
 		case "TRACE":
 			json.nodes.push({"data":{"id":"traceDummy"}, "classes":"traceDummy spec"}); 
-			json.edges.push({"data":{"id":"traceEdgeDummy", "source": getSpecEnd().data.id, "target": "traceDummy", "label":"Accepted: "+"{"+getSpecEnd().data.acc_evt+"}"}, "classes": "traceEdgeDummy"});
+			json.edges.push({"data":{"id":"traceEdgeDummy", "source": getSpecEnd().data.id, "target": "traceDummy", "label":"Available: "+"{"+getSpecEnd().data.acc_evt+"}"}, "classes": "traceEdgeDummy"});
 
 			markLastImpEdge();
  

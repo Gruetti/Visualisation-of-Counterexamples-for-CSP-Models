@@ -11434,8 +11434,8 @@ GridLayout.prototype.run = function(){
       }
     }
 
-    var cellWidth = bb.w / cols;
-    var cellHeight = bb.h / rows;
+    var cellWidth = bb.w / cols*0.001;
+    var cellHeight = bb.h / rows*0.001;
 
     if( options.condense ){
       cellWidth = 0;
