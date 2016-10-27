@@ -54,22 +54,9 @@ function click_handler(button) {
     cy.elements().removeClass('expanded');
     break;
   
-  //this button is shown in the info window. It collapses the currently selected node
-  case "info_collapse_button":
-    cy.batch(function() {
-      cy.remove(cy.elements('.dummy'+cy.elements(':selected').id()));
-    });
-    cy.elements(':selected').removeClass('expanded');
-    break;
-  
   //this button will expand all nodes (showing the available events for this node) 
 	case "expand_button":
     expandNodes();
-    break;
-
-  //this button is shown in the info window. It expands the currently selected node
-  case "info_expand_button":
-    expandNodes(true);
     break;
   		
   }
