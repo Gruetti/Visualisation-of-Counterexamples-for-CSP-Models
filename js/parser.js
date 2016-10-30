@@ -5,8 +5,7 @@
 */
 'use strict';
 
-//Enter the URL of a server, that provides counterexamples here!
-var url = "ws://localhost:8000/";
+
 var json = {};
 
 //This function will receive a counterexample from a server

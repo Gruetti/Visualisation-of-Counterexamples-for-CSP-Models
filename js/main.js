@@ -5,6 +5,12 @@
 */
 
 'use strict';
+
+//Enter the URL of a server, that provides counterexamples here!
+var url = "ws://localhost:8000/";
+//Set to "true", if there is no server, that provides counterexamples
+var standalone_flag = true;
+
 //wait until document is loaded. then initialise the graph
 document.addEventListener("DOMContentLoaded", init());
 //Event listener for file input
@@ -14,8 +20,10 @@ $(document).on("click", ".button, #info_expand_button, #info_collapse_button", c
 
 function init() {
 
-  getDatafromSocket(cyInit);
+  if(!standalone_flag){
 
+    getDatafromSocket(cyInit);
+  }
 }
 
 function handleFileSelect(evt) {
