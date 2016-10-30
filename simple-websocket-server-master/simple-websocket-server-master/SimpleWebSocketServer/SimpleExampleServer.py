@@ -19,7 +19,7 @@ class Counterexample(WebSocket):
         self.sendMessage(json.dumps({
   "name": "TRACE",
   "nodes": [{
-      "data": { "id": "1", "acc_evt": ["a","b","c","d"], "ref_evt":[]}, "classes": "root_spec spec"
+      "data": { "id": "1", "acc_evt": ["a","b","c","d"], "ref_evt":[]}, "classes": "root_spec"
     },
     {
       "data": { "id": "2", "acc_evt": ["b","c","d"], "ref_evt":["a"]}, "classes": "spec"
@@ -28,7 +28,7 @@ class Counterexample(WebSocket):
       "data": { "id": "3", "acc_evt": ["a","b","d"], "ref_evt":["c"]}, "classes": "spec_end"
     },
     {
-      "data": { "id": "1_", "acc_evt": ["a"], "ref_evt":["b","c","d"]}, "classes": "root_imp imp"
+      "data": { "id": "1_", "acc_evt": ["a"], "ref_evt":["b","c","d"]}, "classes": "root_imp"
     },
     {
       "data": { "id": "2_", "acc_evt": ["a","b"], "ref_evt":["c","d"]}, "classes": "imp"
@@ -37,7 +37,7 @@ class Counterexample(WebSocket):
       "data": { "id": "3_", "acc_evt": ["c"], "ref_evt":["a","b","d"]}, "classes": "imp"
     },
     {
-      "data": { "id": "4_", "acc_evt": [], "ref_evt":[]}, "classes": "imp_end imp"
+      "data": { "id": "4_", "acc_evt": [], "ref_evt":[]}, "classes": "imp_end"
     }],
     "edges": [{ 
       "data": { "id": "a", "source": "1", "target": "2", "label": "a"}, "classes": "spec"

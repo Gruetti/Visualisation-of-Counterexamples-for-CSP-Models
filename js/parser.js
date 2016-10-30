@@ -45,29 +45,110 @@ function parseFile(file, callback) {
 }
 
 /**
-* This function returns processed data to use in cytoscape
+* This function returns processed data to use in cytoscape and validates the data using the JSON schema
 */
 function getData() {
 
-	switch(json.name) {
+	var json_schema={
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string", 
+				"enum": ["TRACE", "FAILURE", "LOOP"]
+			},
+			"nodes": {
+				"type": "array", 
+				"items": {
+					"type": "object",
+					"properties": {
+						"data": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								}, 
+								"acc_evt": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"ref_evt": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							},
+							"required": ["id","acc_evt","ref_evt"]
+						},				
+						"classes": {
+							"type": "string",
+							"enum": ["root_spec","root_imp","spec","imp","spec_end","imp_end"]
+						}
+					},
+					"required": ["data"]
+				}
+			},
+			"edges": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"data": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								},
+								"source": {
+									"type": "string"
+								},
+								"target": {
+									"type": "string"
+								},
+								"label": {
+									"type": "string"
+								}
+							},
+							"required":["id","source","target","label"]
+						},
+						"classes": {
+							"type": "string",
+							"enum": ["spec","imp"]
+						}
+					},
+					"required": ["data"]
+				}
+			}
+		}
+	}
 
-		case "TRACE":
-			json.nodes.push({"data":{"id":"traceDummy"}, "classes":"traceDummy spec"}); 
-			json.edges.push({"data":{"id":"traceEdgeDummy", "source": getSpecEnd().data.id, "target": "traceDummy", "label":"Available: "+"{"+getSpecEnd().data.acc_evt+"}"}, "classes": "traceEdgeDummy"});
+	if(tv4.validate(json,json_schema)) {
 
-			markLastImpEdge();
- 
-		return json.nodes.concat(json.edges);
+		switch(json.name) {
+
+			case "TRACE":
+				json.nodes.push({"data":{"id":"traceDummy"}, "classes":"traceDummy spec"}); 
+				json.edges.push({"data":{"id":"traceEdgeDummy", "source": getSpecEnd().data.id, "target": "traceDummy", "label":"Available: "+"{"+getSpecEnd().data.acc_evt+"}"}, "classes": "traceEdgeDummy"});
+
+				markLastImpEdge();
+	 
+			return json.nodes.concat(json.edges);
 
 
-		case "FAILURE":
-			json.nodes.push({"data":{"id":"failDummy"}, "classes":"failDummy imp"}); 
-			json.edges.push({"data":{"id":"failEdgeDummy", "source": getImpEnd().data.id, "target": "failDummy", "label":"Refused: "+"{"+getImpEnd().data.ref_evt+"}"}, "classes": "failEdgeDummy"});
- 
-		return json.nodes.concat(json.edges);
+			case "FAILURE":
+				json.nodes.push({"data":{"id":"failDummy"}, "classes":"failDummy imp"}); 
+				json.edges.push({"data":{"id":"failEdgeDummy", "source": getImpEnd().data.id, "target": "failDummy", "label":"Refused: "+"{"+getImpEnd().data.ref_evt+"}"}, "classes": "failEdgeDummy"});
+	 
+			return json.nodes.concat(json.edges);
 
-		case "LOOP":
-		return json.nodes.concat(json.edges);
+			case "LOOP":
+			return json.nodes.concat(json.edges);
+		}
+	} else {
+
+		alert('The data is not in the required JSON format!');
 	}
 }
 

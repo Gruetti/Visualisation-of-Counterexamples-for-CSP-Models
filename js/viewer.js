@@ -77,7 +77,7 @@ function cyInit(data,type) {
     layout_options = {
       name: 'grid',
       position: function (node) {
-        if (node.hasClass('imp')) {
+        if (node.hasClass('imp') || node.hasClass('root_imp') || node.hasClass('imp_end')) {
        return {row:2,col:undefined};
         } else {
           return {row:1, col:undefined}
@@ -93,7 +93,7 @@ function cyInit(data,type) {
     layout_options = {
       name: 'grid',
       position: function (node) {
-        if (node.hasClass('imp')) {
+        if (node.hasClass('imp')|| node.hasClass('root_imp') || node.hasClass('imp_end')) {
        return {row:2,col:undefined};
         } else {
           return {row:1, col:undefined}

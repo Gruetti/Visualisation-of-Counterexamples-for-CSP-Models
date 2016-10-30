@@ -1,16 +1,16 @@
 {
   "name": "FAILURE",
   "nodes": [{
-      "data": { "id": "1_", "acc_evt": ["a","b","c","d"], "ref_evt":[]}, "classes": "root_imp imp"
+      "data": { "id": "1_", "acc_evt": ["a","b","c","d"], "ref_evt":[]}, "classes": "root_imp"
     },
     {
       "data": { "id": "2_", "acc_evt": ["b","c","d"], "ref_evt":["a","d"]}, "classes": "imp"
     },
     {
-      "data": { "id": "3_", "acc_evt": ["a","b","d"], "ref_evt":["c"]}, "classes": "imp_end imp"
+      "data": { "id": "3_", "acc_evt": ["a","b","d"], "ref_evt":["c"]}, "classes": "imp_end"
     },
     {
-      "data": { "id": "1", "acc_evt": ["a"], "ref_evt":["b","c","d"]}, "classes": "root_spec spec"
+      "data": { "id": "1", "acc_evt": ["a"], "ref_evt":["b","c","d"]}, "classes": "root_spec"
     },
     {
       "data": { "id": "2", "acc_evt": ["a","b"], "ref_evt":["c","d"]}, "classes": "spec"
@@ -19,7 +19,7 @@
       "data": { "id": "3", "acc_evt": ["c"], "ref_evt":["a","b","d"]}, "classes": "spec"
     },
     {
-      "data": { "id": "4", "acc_evt": [], "ref_evt":[]}, "classes": "spec_end spec"
+      "data": { "id": "4", "acc_evt": [], "ref_evt":[]}, "classes": "spec_end"
     }],
     "edges": [{ 
       "data": { "id": "a_", "source": "1_", "target": "2_", "label": "a"}, "classes": "imp"
