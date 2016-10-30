@@ -12,6 +12,53 @@
 var cy = [];
 var cxtmenuAPI = [];
 
+/*
+* IMPORTANT! NEW FUNCTIONS CAN BE ADDED HERE!
+* Settings and functions for the contextmenu
+* To add functions to the contextmenu, simply copy an entry from "commands" and change the function in "select"
+*/
+var defaults = {
+  menuRadius: 100, // the radius of the circular menu in pixels
+  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+  commands: [ // an array of commands to list in the menu or a function that returns the array
+
+  {
+      fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
+      content: 'Expand', // html/text content to be displayed in the menu
+      select: function(ele){ // a function to execute when the command is selected
+        addExpandedNodes(ele); // `ele` holds the reference to the active element
+      },
+      disabled: false // disables the item on true
+    },
+    {
+      fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
+      content: 'Collapse', // html/text content to be displayed in the menu
+      select: function(ele){
+        cy.batch(function() {
+          cy.remove(cy.elements('.dummy'+ele.id()));
+        });
+        ele.removeClass('expanded');
+      },
+      disabled: false // disables the item on true
+    }
+    
+    ],
+  fillColor: 'rgba(0, 0, 0, 0.75)', // the background colour of the menu
+  activeFillColor: 'rgba(254, 142, 65, 0.75)', // the colour used to indicate the selected command
+  activePadding: 20, // additional size in pixels for the active command
+  indicatorSize: 24, // the size in pixels of the pointer to the active command
+  separatorWidth: 3, // the empty spacing in pixels between successive commands
+  spotlightPadding: 4, // extra spacing in pixels between the element and the spotlight
+  minSpotlightRadius: 24, // the minimum radius in pixels of the spotlight
+  maxSpotlightRadius: 38, // the maximum radius in pixels of the spotlight
+  openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
+  itemColor: 'white', // the colour of text in the command's content
+  itemTextShadowColor: 'black', // the text shadow colour of the command's content
+  zIndex: 9999, // the z-index of the ui div
+  atMouse: false // draw menu at mouse position
+};
+
+
 /**
 * This function creates a graph object with cytoscape.js and binds it to a html container. It also sets 
 * options for layout and style, according to counterexample type
@@ -103,49 +150,11 @@ function cyInit(data,type) {
     var node = this;
     node.removeClass('hovered');
   });
-
-  var defaults = {
-  menuRadius: 100, // the radius of the circular menu in pixels
-  selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-  commands: [ // an array of commands to list in the menu or a function that returns the array
-    
-    { // example command
-      fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
-      content: 'Expand', // html/text content to be displayed in the menu
-      select: function(ele){ // a function to execute when the command is selected
-        addExpandedNodes(ele); // `ele` holds the reference to the active element
-      },
-      disabled: false // disables the item on true
-    },
-        { // example command
-      fillColor: 'rgba(200, 200, 200, 0.75)', // optional: custom background color for item
-      content: 'Collapse', // html/text content to be displayed in the menu
-      select: function(ele){
-        cy.batch(function() {
-          cy.remove(cy.elements('.dummy'+ele.id()));
-          });
-          ele.removeClass('expanded');
-      },
-      disabled: false // disables the item on true
-    }
-    
-  ], // function( ele ){ return [ /*...*/ ] }, // example function for commands
-  fillColor: 'rgba(0, 0, 0, 0.75)', // the background colour of the menu
-  activeFillColor: 'rgba(254, 142, 65, 0.75)', // the colour used to indicate the selected command
-  activePadding: 20, // additional size in pixels for the active command
-  indicatorSize: 24, // the size in pixels of the pointer to the active command
-  separatorWidth: 3, // the empty spacing in pixels between successive commands
-  spotlightPadding: 4, // extra spacing in pixels between the element and the spotlight
-  minSpotlightRadius: 24, // the minimum radius in pixels of the spotlight
-  maxSpotlightRadius: 38, // the maximum radius in pixels of the spotlight
-  openMenuEvents: 'cxttapstart taphold', // cytoscape events that will open the menu (space separated)
-  itemColor: 'white', // the colour of text in the command's content
-  itemTextShadowColor: 'black', // the text shadow colour of the command's content
-  zIndex: 9999, // the z-index of the ui div
-  atMouse: false // draw menu at mouse position
-};
+  
   cxtmenuAPI = cy.cxtmenu(defaults);
 }
+
+
 
 /**
 * This function hides the info window

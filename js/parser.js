@@ -5,8 +5,28 @@
 */
 'use strict';
 
-var json = {
-};
+//Enter the URL of a server, that provides counterexamples here!
+var url = "ws://localhost:8000/";
+var json = {};
+
+//This function will receive a counterexample from a server
+function getDatafromSocket(callback){
+
+	var websocket = new WebSocket(url);
+	websocket.onopen = function(evt){console.log('Connected')};
+	websocket.onmessage = function(evt){
+		json=JSON.parse(evt.data);
+		callback(getData(),getType());
+		console.log('Data received');
+		websocket.close();
+	};
+	websocket.onclose = function(evt){console.log('Disconnected')};
+	websocket.onerror = function(evt){
+							alert('An error has occured: '+ evt.data+'. If the server is ready, try refreshing.');
+							websocket.close();
+						};
+
+}
 
 /**
 * This function creates a json object from a file object

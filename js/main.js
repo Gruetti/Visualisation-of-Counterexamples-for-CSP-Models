@@ -14,9 +14,8 @@ $(document).on("click", ".button, #info_expand_button, #info_collapse_button", c
 
 function init() {
 
-  if (getData() != undefined) {
-    cyInit(getData(),getType());
-  }
+  getDatafromSocket(cyInit);
+
 }
 
 function handleFileSelect(evt) {

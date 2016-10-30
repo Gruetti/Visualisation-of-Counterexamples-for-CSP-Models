@@ -4,7 +4,7 @@
       "data": { "id": "1", "acc_evt": ["a","b","c","d"], "ref_evt":[]}, "classes": "root_spec spec"
     },
     {
-      "data": { "id": "2", "acc_evt": ["b","c","d"], "ref_evt":["a","d"]}, "classes": "spec"
+      "data": { "id": "2", "acc_evt": ["b","c","d"], "ref_evt":["a"]}, "classes": "spec"
     },
     {
       "data": { "id": "3", "acc_evt": ["a","b","d"], "ref_evt":["c"]}, "classes": "spec_end"
